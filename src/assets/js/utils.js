@@ -52,7 +52,7 @@ async function getBasicInfoActivity(){
 
   // 活动的相关信息
   let result_getActivityInfo =await getActivityInfo({id:eventId})
-  //console.log(result_getActivityInfo);
+  console.log(result_getActivityInfo);
   actvityMessage.actContent = result_getActivityInfo
 
 

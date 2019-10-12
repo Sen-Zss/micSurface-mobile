@@ -38,6 +38,9 @@
     width: 100%;
     height: auto;
   }
+  .js-banner{
+    width :100%;
+  }
   .bannerContent {
     position: absolute;
     width: 100%;
@@ -53,7 +56,8 @@
     padding-top: 130px;
   }
   .banner-title {
-    font-size: 32px;
+    // font-size: 32px;
+    font-size: 2.3rem;
     font-weight: bold;
     word-break: break-all;
     text-align: center;

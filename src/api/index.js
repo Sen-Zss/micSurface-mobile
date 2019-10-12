@@ -29,7 +29,10 @@ export const getActivityInfo= ({id}) =>ajax(BASE_URL+'/Event/Events/Get',{id})
 // todo 判断用户是否通过审核，判断是否显示票号及二维码
 export const getUserCheckIn= (eventId) =>ajax(BASE_URL+'/Event/EventH5/GetSingle',{eventId},"POST")
 
+export const getRegisterExtend= (eventId) =>ajax(BASE_URL+'/Event/Examination/GetRegisterExtend',{eventId},"POST")
 
+
+export const EventH5Register= (data) =>ajax(BASE_URL+'/Event/EventH5/Register',{data},"POST")
 
 
 

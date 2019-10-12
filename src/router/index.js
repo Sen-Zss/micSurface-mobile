@@ -8,7 +8,7 @@ import Register from '../pages/Register/Register'
 import Review from '../pages/Review/Review'
 import Success from '../pages/Success/Success'
 import Redirect from '../pages/Redirect/Redirect'
-
+import Error from '../pages/Error/Error'
 
 Vue.use(Router)
 
@@ -63,6 +63,15 @@ const router = new Router({
       }
     },
     {
+      path: '/error',
+      name: 'Error',
+      component: Error,
+      meta: {
+        headerStatus: true,
+        tabStatus: true
+      }
+    },
+    {
       path: '/',
       redirect: '/home'
     }
@@ -74,9 +83,15 @@ router.beforeEach((to, from, next) => {
   let url = window.location.href;
   //请求用户的token，有数据：获取活动信息，无数据，返回 url，拼接 url 跳转
   //无 eventId
+  console.log(to)
   if(!to.query.eventId && !store.state.activityMessage.eventId){
-    if(to.path !='/redirect'){
-      router.push({ 'path':'/redirect'})
+    console.log('无 eventId')
+    if(to.path !='/error'){
+      console.log('go redirect');
+      router.push({ 'path':'/error'})
+      next()
+    }else{
+      console.log('go redirect 2');
       next()
     }
   }else if(!store.state.activityMessage.eventId){
@@ -88,8 +103,6 @@ router.beforeEach((to, from, next) => {
     next()
   }
 
-
-
 });
 export default router
 
@@ -97,8 +110,14 @@ export default router
 
 function handleLink(res,to,router,next){
   if(!res.actStatus.IsEnable){ // 是否开启活动报名
+    router.app.$store.dispatch('setActivityAllMessage',res)
+    router.app.$store.dispatch('setCampaignChannelId',res.actStatus.Id)
     router.push({
-      'name': 'Redirect',
+      'path': '/redirect',
+      'query':{
+        eventId:store.state.activityMessage.eventId,
+        campaignChannelId:store.state.activityMessage.campaignChannelId,
+      }
     })
     next()
   }else{
@@ -109,13 +128,14 @@ function handleLink(res,to,router,next){
     // if(to.name ==='Success' || to.name ==='Review'){
     // }else{
     // }
-    router.push({
-      'path': '/home',
-      'query':{
-        eventId:store.state.activityMessage.eventId,
-        campaignChannelId:store.state.activityMessage.campaignChannelId,
-      }
-    })
+    
+    // router.push({
+    //   'path': '/home',
+    //   'query':{
+    //     eventId:store.state.activityMessage.eventId,
+    //     campaignChannelId:store.state.activityMessage.campaignChannelId,
+    //   }
+    // })
     next()
 
   }
