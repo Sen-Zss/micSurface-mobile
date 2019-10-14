@@ -1,6 +1,5 @@
 <template>
     <div class="HomePage" style="color:#f80000;font-size:36px;">
-      <!-- Home -->
       <img src="../../assets/images/bj.jpg" alt="" class="img-bj">
       <img src="../../assets/images/logo.png" alt="" class="logo">
       <div class="title">{{name}}<br>{{name1}}</div>
@@ -48,15 +47,11 @@ import {getActivityInfo} from '../../api/index'
       },
       methods:{
        routerL(){
-        //  console.log(this.$store.state.activityMessage.eventId)
-        //  console.log(this.$store.state.activityMessage.campaignChannelId)
          var eventId = this.$store.state.activityMessage.eventId;
          var campaignChannelId = this.$store.state.activityMessage.campaignChannelId;
          this.$router.push('/register?'+ 'eventId='+eventId+'&campaignChannelId='+campaignChannelId)
        },
        routerLt(){
-        //  console.log(this.$store.state.activityMessage.eventId)
-        //  console.log(this.$store.state.activityMessage.campaignChannelId)
          var eventId = this.$store.state.activityMessage.eventId;
          var campaignChannelId = this.$store.state.activityMessage.campaignChannelId;
          this.$router.push('/redirect?'+ 'eventId='+eventId+'&campaignChannelId='+campaignChannelId)

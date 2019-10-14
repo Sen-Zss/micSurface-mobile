@@ -225,13 +225,11 @@
                         return
                       }else{
                         add_result = $(elem).find("input[type='datetime-local']").val()
-                        // console.log(add_result)
                       }
                     }
                     question_Field = {'result': add_result};
                     questionListInfo.push(question_Field);
                     info = JSON.stringify(questionListInfo);
-                    // console.log(info)
                   }else{
                     info = "";
                   }
@@ -240,22 +238,22 @@
             }
 
             var data = { 
-                platform: "WeChat",
-                Title:'',
-                WeChatUserId: '7547F1E6-C853-43DC-8415-836FCF85D99A', //weChatUserId, 
-                UserId: '', //regUserId, 
-                ActivityName: 'dd', //activityName, 
-                CampaignChannelId: this.$store.state.activityMessage.campaignChannelId, //CampaignChannelId, 
-                eventId: this.$store.state.activityMessage.eventId, 
-                Name: this.name, 
-                Gender:0, //gender, 
-                Company:'cc', // company, 
-                CellPhone: this.phone, //cellPhone, 
-                Email: this.email, 
-                Other: 'ewr', //other, 
-                Session: 'hn', //sessions, 
-                info: 'mjy'
-              }
+              platform: "WeChat",
+              Title:'',
+              WeChatUserId: '7547F1E6-C853-43DC-8415-836FCF85D99A', //weChatUserId, 
+              UserId: '', //regUserId, 
+              ActivityName: 'dd', //activityName, 
+              CampaignChannelId: this.$store.state.activityMessage.campaignChannelId, //CampaignChannelId, 
+              eventId: this.$store.state.activityMessage.eventId, 
+              Name: this.name, 
+              Gender:0, //gender, 
+              Company:'cc', // company, 
+              CellPhone: this.phone, //cellPhone, 
+              Email: this.email, 
+              Other: 'ewr', //other, 
+              Session: 'hn', //sessions, 
+              info: 'mjy'
+            }
             EventH5Register(data).then(res=>{
               // if(){
               // 判断用户是否已经登录注册过
