@@ -173,68 +173,70 @@
             }
 
             // 自定义字段的判断
-            for(var i=0;i<this.mydate.listQuestionArray.length;i++){
-                let item = this.mydate.listQuestionArray[i]
-                var info;
-                var questionListInfo = []; //传参info对应值
-                var question_Field = {}; //code:result 对象模式存入info参数
-                var add_result; //存储result参数值
+            if(this.mydate.listQuestionArray){
+              for(var i=0;i<this.mydate.listQuestionArray.length;i++){
+                  let item = this.mydate.listQuestionArray[i]
+                  var info;
+                  var questionListInfo = []; //传参info对应值
+                  var question_Field = {}; //code:result 对象模式存入info参数
+                  var add_result; //存储result参数值
 
-                let elem = '#'+item.QuestionId
+                  let elem = '#'+item.QuestionId
 
-                if(this.mydate.listQuestionArray.length!=0){
-                  if(item.QuestionType=='text' || item.QuestionType=='textarea'){
+                  if(this.mydate.listQuestionArray.length!=0){
+                    if(item.QuestionType=='text' || item.QuestionType=='textarea'){
 
-                    if(!($(elem).val() && item.IsRequired===1) ){
-                      alert("请填写完整 文本");
-                      return
-                    }else{
-                      add_result = $(elem).val()
-                    }
-                  }else if(item.QuestionType=='radio' ){
-                   
-                    if(!$(elem).find("input[type='radio']:checked").val() && item.IsRequired===1){
-                      alert("请填写完整 单选")
-                      return
-                    }else{
-                      add_result = $(elem).find("input[type='radio']:checked").val()
-                    }
-                  }else if(item.QuestionType=='checkbox'){
-                   
-                    for(var c=0;c<$(elem).find("input[type='checkbox']:checked").length;c++){
-                      if($(elem).find("input[type='checkbox']:checked").length==0 && item.IsRequired===1){
-                        alert("请填写完整  多选")
+                      if(!($(elem).val() && item.IsRequired===1) ){
+                        alert("请填写完整 文本");
                         return
                       }else{
-                        add_result = $(elem).find("input[type='checkbox']:checked")[c].value
+                        add_result = $(elem).val()
+                      }
+                    }else if(item.QuestionType=='radio' ){
+                    
+                      if(!$(elem).find("input[type='radio']:checked").val() && item.IsRequired===1){
+                        alert("请填写完整 单选")
+                        return
+                      }else{
+                        add_result = $(elem).find("input[type='radio']:checked").val()
+                      }
+                    }else if(item.QuestionType=='checkbox'){
+                    
+                      for(var c=0;c<$(elem).find("input[type='checkbox']:checked").length;c++){
+                        if($(elem).find("input[type='checkbox']:checked").length==0 && item.IsRequired===1){
+                          alert("请填写完整  多选")
+                          return
+                        }else{
+                          add_result = $(elem).find("input[type='checkbox']:checked")[c].value
+                        }
+                      }
+                    }else if(item.QuestionType=='select'){
+                      // console.log($(elem).find("option:selected").attr("value"));
+                      if( ($(elem).find("option:selected").attr("value")=="请选择" || !$(elem).find("option:selected").attr("value"))   &&  item.IsRequired===1  ){
+                        alert("请填写完整  下拉框")
+                        return
+                      }else{
+                        add_result = $(elem).find("option:selected").attr("value")
+                      }
+                    }else if(item.QuestionType=='datetime'){
+                      // console.log($(elem).find("input[type='datetime-local']").val())
+                      if(!$(elem).find("input[type='datetime-local']").val() && item.IsRequired===1){
+                        alert("请填写完整  日期")
+                        return
+                      }else{
+                        add_result = $(elem).find("input[type='datetime-local']").val()
+                        // console.log(add_result)
                       }
                     }
-                  }else if(item.QuestionType=='select'){
-                    // console.log($(elem).find("option:selected").attr("value"));
-                    if( ($(elem).find("option:selected").attr("value")=="请选择" || !$(elem).find("option:selected").attr("value"))   &&  item.IsRequired===1  ){
-                      alert("请填写完整  下拉框")
-                      return
-                    }else{
-                      add_result = $(elem).find("option:selected").attr("value")
-                    }
-                  }else if(item.QuestionType=='datetime'){
-                    // console.log($(elem).find("input[type='datetime-local']").val())
-                    if(!$(elem).find("input[type='datetime-local']").val() && item.IsRequired===1){
-                      alert("请填写完整  日期")
-                      return
-                    }else{
-                      add_result = $(elem).find("input[type='datetime-local']").val()
-                      // console.log(add_result)
-                    }
+                    question_Field = {'result': add_result};
+                    questionListInfo.push(question_Field);
+                    info = JSON.stringify(questionListInfo);
+                    // console.log(info)
+                  }else{
+                    info = "";
                   }
-                  question_Field = {'result': add_result};
-                  questionListInfo.push(question_Field);
-                  info = JSON.stringify(questionListInfo);
-                  // console.log(info)
-                }else{
-                  info = "";
-                }
 
+              }
             }
 
             var data = { 
