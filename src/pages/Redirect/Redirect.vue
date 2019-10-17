@@ -1,7 +1,6 @@
 <template>
-    <div class="HomePage" style="color:#f80000;font-size:36px;">
-
-      <!-- 报名未开始页 | 报名已结束页 | 活动不存在 | 错误页 .....等 -->
+    <div class="HomePage" style="color:#f80000;font-size:36px;" v-wechat-title="$route.meta.title">
+      <!-- 日程页 -->
       <div class="bj-1"></div>
       <div class="bj-3"></div>
       <div class="logo">

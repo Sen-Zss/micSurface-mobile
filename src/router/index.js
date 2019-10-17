@@ -10,12 +10,14 @@ import Success from '../pages/Success/Success'
 import Redirect from '../pages/Redirect/Redirect'
 import Error from '../pages/Error/Error'
 
+import {WechatLoginHtmlApi,getUserStatus} from '../api/index'
+
 Vue.use(Router)
 
 
 const router = new Router({
-  // mode: 'history',
-  // base: 'dist/',
+  mode: 'history',
+  base: '',
   routes: [
     {
       path: '/home',
@@ -23,7 +25,8 @@ const router = new Router({
       component: Home,
       meta: {
         headerStatus: true,
-        tabStatus: true
+        tabStatus: true,
+        title:"首页"
       }
     },
     {
@@ -32,7 +35,8 @@ const router = new Router({
       component: Register,
       meta: {
         headerStatus: true,
-        tabStatus: true
+        tabStatus: true,
+        title:"报名"
       }
     },
     {
@@ -41,7 +45,8 @@ const router = new Router({
       component: Review,
       meta: {
         headerStatus: true,
-        tabStatus: true
+        tabStatus: true,
+        title:"审核"
       }
     },
     {
@@ -50,7 +55,8 @@ const router = new Router({
       component: Success,
       meta: {
         headerStatus: true,
-        tabStatus: true
+        tabStatus: true,
+        title:"报名成功"
       }
     },
     {
@@ -59,7 +65,8 @@ const router = new Router({
       component: Redirect,
       meta: {
         headerStatus: true,
-        tabStatus: true
+        tabStatus: true,
+        title:"日程"
       }
     },
     {
@@ -68,7 +75,8 @@ const router = new Router({
       component: Error,
       meta: {
         headerStatus: true,
-        tabStatus: true
+        tabStatus: true,
+        title:"错误"
       }
     },
     {
@@ -78,14 +86,19 @@ const router = new Router({
   ]
 })
 
+
+const baurl = 'http://localhost:8181/home?'
+
 // 路由的前置守卫
 router.beforeEach((to, from, next) => {
   let url = window.location.href;
   //请求用户的token，有数据：获取活动信息，无数据，返回 url，拼接 url 跳转
   //无 eventId
   console.log(to)
+  console.log('无 eventId')
+  
   if(!to.query.eventId && !store.state.activityMessage.eventId){
-    console.log('无 eventId')
+    
     if(to.path !='/error'){
       console.log('go redirect');
       router.push({ 'path':'/error'})
@@ -96,6 +109,22 @@ router.beforeEach((to, from, next) => {
     }
   }else if(!store.state.activityMessage.eventId){
     router.app.$store.dispatch('setEventId',to.query.eventId);
+    WechatLoginHtmlApi(store.state.activityMessage.eventId,(baurl+'eventId='+to.query.eventId)).then(res=>{
+      // console.log(res)
+      let tourl = res.Result
+      // 判断微信信息是否成功获取
+      getUserStatus(to.query.eventId).then(res=>{
+        console.log(res)
+        if(res.Code=='200'){
+          alert(res.Message)
+        }else if(res.Code=='61308'){
+          window.location.replace(tourl);
+          // alert(res.Message)
+        }else if(res.Code == '500'){
+          alert(res.Message)
+        }
+      })
+    })
     getActivityMessage(store).then((res)=>{
       handleLink(res,to,router,next)
     })

@@ -1,5 +1,5 @@
 <template>
-    <div class="HomePage" style="color:#f80000;font-size:36px;">
+    <div class="HomePage" style="color:#f80000;font-size:36px;" v-wechat-title="$route.meta.title">
       <img src="../../assets/images/bj.jpg" alt="" class="img-bj">
       <img src="../../assets/images/logo.png" alt="" class="logo">
       <div class="title">{{name}}<br>{{name1}}</div>
@@ -11,7 +11,7 @@
 
 <script>
 import {receive_campaignChannelId} from 'vuex'
-import {getActivityInfo} from '../../api/index'
+import {getActivityInfo,getUserToken} from '../../api/index'
     export default {
       name: "Home",
       components:{
@@ -26,13 +26,24 @@ import {getActivityInfo} from '../../api/index'
         }
       },
       beforeCreate(){
+        // var data = {
+          //   pName:'',
+          //   eventId:this.$store.state.activityMessage.eventId,
+          //   campaignChannelId:this.$store.state.activityMessage.campaignChannelId,
+          //   platform:'WeChat',
+          //   debug:true
+          // }
+          // getUserToken(data).then(res=>{
+          //   console.log(res)
+        // })
+
         var eventId = this.$store.state.activityMessage.eventId;
         getActivityInfo({id:eventId}).then(res=>{
           this.name=res.Name
           this.name1=res.Name1
           this.time=res.StartTime.slice(0,10)
         })
-        
+
       },
       created(){
         

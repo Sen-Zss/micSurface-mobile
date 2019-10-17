@@ -34,5 +34,4 @@ export const getRegisterExtend= (eventId) =>ajax(BASE_URL+'/Event/Examination/Ge
 
 export const EventH5Register= (data) =>ajax(BASE_URL+'/Event/EventH5/Register',{data},"POST")
 
-
-
+export const WechatLoginHtmlApi= (eventId,callbackUrl) =>ajax(BASE_URL+'/Event/WeChat/WechatLoginHtmlApi',{eventId,callbackUrl},"POST")

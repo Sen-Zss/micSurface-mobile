@@ -1,5 +1,5 @@
 <template>
-    <div class="HomePage" style="color:#f80000;font-size:36px;">
+    <div class="HomePage" style="color:#f80000;font-size:36px;" v-wechat-title="$route.meta.title">
        <!-- 报名页 -->
        <div class="con-top">
          <Banner></Banner>
@@ -255,55 +255,25 @@
               info: 'mjy'
             }
             EventH5Register(data).then(res=>{
+              // 判断提交是否成功
               // if(){
-              // 判断用户是否已经登录注册过
-
-              //   // 跳转
-              //   var eventId = this.$store.state.activityMessage.eventId;
-              //   var campaignChannelId = this.$store.state.activityMessage.campaignChannelId;
-              //   this.$router.push('/review?'+ 'eventId='+eventId+'&campaignChannelId='+campaignChannelId)
+                // 判断用户是否已经登录注册过
+                // if(){
+                  // 跳转提交成功
+                  var eventId = this.$store.state.activityMessage.eventId;
+                  var campaignChannelId = this.$store.state.activityMessage.campaignChannelId;
+                  this.$router.push('/review?'+ 'eventId='+eventId+'&campaignChannelId='+campaignChannelId)
+                // }else{
+                  // 跳转报名成功
+                  // var eventId = this.$store.state.activityMessage.eventId;
+                  // var campaignChannelId = this.$store.state.activityMessage.campaignChannelId;
+                  // this.$router.push('/seccess?'+ 'eventId='+eventId+'&campaignChannelId='+campaignChannelId)
+                // }
               // }else{
               //   alert("信息提交失败！");
               // }
             })
 
-            // $.ajax({
-              //   url: '/Event/EventH5/Register',
-              //   type: 'post',
-              //   dataType: 'json',
-              //   data: { 
-              //     platform: "WeChat",
-              //     WeChatUserId: 'aaa', //weChatUserId, 
-              //     UserId: 'ss', //regUserId, 
-              //     ActivityName: 'dd', //activityName, 
-              //     CampaignChannelId: this.$store.state.activityMessage.campaignChannelId, //CampaignChannelId, 
-              //     eventId: this.$store.state.activityMessage.eventId, 
-              //     Name: this.name, 
-              //     Gender:'ff', //gender, 
-              //     Company:'cc', // company, 
-              //     CellPhone: 'gv', //cellPhone, 
-              //     Email: this.email, 
-              //     Other: 'ewr', //other, 
-              //     Session: 'hn', //sessions, 
-              //     info: 'mjy'
-              //   },
-              //   success: function (data) {
-              //     // 跳转
-              //     var eventId = this.$store.state.activityMessage.eventId;
-              //     var campaignChannelId = this.$store.state.activityMessage.campaignChannelId;
-              //     this.$router.push('/review?'+ 'eventId='+eventId+'&campaignChannelId='+campaignChannelId)
-              //   },
-              //   error: function (res) {
-              //       // closeLoading();
-              //       // setTimeout(function () {
-              //       //     submitBtnDisable();
-              //       // }, 300);
-              //       alert("信息提交失败！");
-              //       console.log(res)
-              //   }
-
-            // })
-            
 
         }
       }

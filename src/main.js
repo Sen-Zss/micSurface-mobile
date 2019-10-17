@@ -6,6 +6,9 @@ import store  from './store'
 
 import './assets/stylus/index.styl'
 
+import VueWechatTitle from 'vue-wechat-title'  //引入
+Vue.use(VueWechatTitle)                        //注册组件
+
 // vue-lazyload
 import VueLazyloader from 'vue-lazyload'
 import lazyloadingImg from './assets/images/lazyDefault.png'

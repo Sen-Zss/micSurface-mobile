@@ -1,5 +1,5 @@
 <template>
-    <div class="HomePage" style="color:#f80000;font-size:36px;">
+    <div class="HomePage" style="color:#f80000;font-size:36px;" v-wechat-title="$route.meta.title">
        <!-- 报名成功页 -->
       <div class="con-top">
          <Banner></Banner>

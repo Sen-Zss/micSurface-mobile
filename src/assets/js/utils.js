@@ -48,7 +48,7 @@ async function getBasicInfoActivity(){
   actvityMessage.actStatus = result_getSignUpStatus
   // 判断用户是否已经登录注册过
   let result_getUserStatus =await getUserStatus({eventId})
-  // console.log(result_getUserStatus);
+  console.log(result_getUserStatus);
 
   // 活动的相关信息
   let result_getActivityInfo =await getActivityInfo({id:eventId})
