@@ -36,8 +36,20 @@ import {getActivityInfo,getUserToken} from '../../api/index'
           // getUserToken(data).then(res=>{
           //   console.log(res)
         // })
-
-        var eventId = this.$store.state.activityMessage.eventId;
+        function GetQueryString(name){
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null)
+            {
+                return decodeURI(r[2]);
+            } else
+            {
+                return null;
+            }
+        }
+        var asd = GetQueryString('eventId')
+        var asf = GetQueryString('campaignChannelId')
+        var eventId = asd;
         getActivityInfo({id:eventId}).then(res=>{
           this.name=res.Name
           this.name1=res.Name1

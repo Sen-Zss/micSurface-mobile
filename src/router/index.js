@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import store  from '../store'
-import {getActivityMessage} from '../assets/js/utils'
+import {getActivityMessage,GetQueryString} from '../assets/js/utils'
 
 import Home from '../pages/Home/Home'
 import Register from '../pages/Register/Register'
@@ -10,14 +10,13 @@ import Success from '../pages/Success/Success'
 import Redirect from '../pages/Redirect/Redirect'
 import Error from '../pages/Error/Error'
 
-import {WechatLoginHtmlApi,getUserStatus} from '../api/index'
 
 Vue.use(Router)
 
 
 const router = new Router({
-  mode: 'history',
-  base: '',
+  // mode: 'history',
+  // base: '',
   routes: [
     {
       path: '/home',
@@ -87,18 +86,13 @@ const router = new Router({
 })
 
 
-const baurl = 'http://localhost:8181/home?'
-
 // 路由的前置守卫
 router.beforeEach((to, from, next) => {
   let url = window.location.href;
   //请求用户的token，有数据：获取活动信息，无数据，返回 url，拼接 url 跳转
-  //无 eventId
-  console.log(to)
-  console.log('无 eventId')
-  
-  if(!to.query.eventId && !store.state.activityMessage.eventId){
-    
+  var eventId = GetQueryString('eventId')
+
+  if(!eventId && !store.state.activityMessage.eventId){
     if(to.path !='/error'){
       console.log('go redirect');
       router.push({ 'path':'/error'})
@@ -109,32 +103,14 @@ router.beforeEach((to, from, next) => {
     }
   }else if(!store.state.activityMessage.eventId){
     router.app.$store.dispatch('setEventId',to.query.eventId);
-    WechatLoginHtmlApi(store.state.activityMessage.eventId,(baurl+'eventId='+to.query.eventId)).then(res=>{
-      // console.log(res)
-      let tourl = res.Result
-      // 判断微信信息是否成功获取
-      getUserStatus(to.query.eventId).then(res=>{
-        console.log(res)
-        if(res.Code=='200'){
-          alert(res.Message)
-        }else if(res.Code=='61308'){
-          window.location.replace(tourl);
-          // alert(res.Message)
-        }else if(res.Code == '500'){
-          alert(res.Message)
-        }
-      })
-    })
     getActivityMessage(store).then((res)=>{
       handleLink(res,to,router,next)
     })
   }else{
     next()
   }
-
 });
 export default router
-
 
 
 function handleLink(res,to,router,next){
@@ -150,7 +126,7 @@ function handleLink(res,to,router,next){
     })
     next()
   }else{
-    console.log(res);
+    // console.log(res);
     router.app.$store.dispatch('setActivityAllMessage',res)
     router.app.$store.dispatch('setCampaignChannelId',res.actStatus.Id)
     // 如果当前在审核页或成功页，判断是否有用户注册或报名信息，没有跳转到 Home 页，
@@ -166,6 +142,5 @@ function handleLink(res,to,router,next){
     //   }
     // })
     next()
-
   }
 }

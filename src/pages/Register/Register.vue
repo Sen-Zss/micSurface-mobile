@@ -114,7 +114,7 @@
 
 <script>
     import banner from '../../components/Banner/Banner'
-    import {getRegisterExtend,EventH5Register} from '../../api/index'
+    import {getRegisterExtend,EventH5Register,getUserStatus} from '../../api/index'
     import {emailReg,phoneReg} from '../../assets/js/config'
     export default {
       components:{
@@ -129,15 +129,30 @@
             phone:'',
             checked:true,
             mydate:{},
+            asd:'',
+            asf:'',
         }
       },
       beforeCreate(){
-        getRegisterExtend(this.$store.state.activityMessage.eventId).then(res=>{
+        function GetQueryString(name){
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null)
+            {
+                return decodeURI(r[2]);
+            } else
+            {
+                return null;
+            }
+        }
+        this.asd = GetQueryString('eventId')
+        this.asf = GetQueryString('campaignChannelId')
+        getRegisterExtend(this.asd).then(res=>{
           if(res.code==200){
             this.mydate=res.data
             // console.log(this.mydate)
           }else{
-            console.log(res)
+            console.log(res.Message)
           }
         })
 
@@ -244,7 +259,7 @@
               UserId: '', //regUserId, 
               ActivityName: 'dd', //activityName, 
               CampaignChannelId: this.$store.state.activityMessage.campaignChannelId, //CampaignChannelId, 
-              eventId: this.$store.state.activityMessage.eventId, 
+              eventId: this.asd, 
               Name: this.name, 
               Gender:0, //gender, 
               Company:'cc', // company, 
@@ -256,22 +271,24 @@
             }
             EventH5Register(data).then(res=>{
               // 判断提交是否成功
-              // if(){
+              if(res.data){
                 // 判断用户是否已经登录注册过
-                // if(){
-                  // 跳转提交成功
-                  var eventId = this.$store.state.activityMessage.eventId;
-                  var campaignChannelId = this.$store.state.activityMessage.campaignChannelId;
-                  this.$router.push('/review?'+ 'eventId='+eventId+'&campaignChannelId='+campaignChannelId)
-                // }else{
-                  // 跳转报名成功
-                  // var eventId = this.$store.state.activityMessage.eventId;
-                  // var campaignChannelId = this.$store.state.activityMessage.campaignChannelId;
-                  // this.$router.push('/seccess?'+ 'eventId='+eventId+'&campaignChannelId='+campaignChannelId)
-                // }
-              // }else{
-              //   alert("信息提交失败！");
-              // }
+                getUserStatus(this.asd).then(res=>{
+                  if(res.Code == 10001){
+                    // 跳转提交成功
+                    var eventId = this.asd;
+                    var campaignChannelId = this.$store.state.activityMessage.campaignChannelId;
+                    this.$router.push('/review?'+ 'eventId='+eventId+'&campaignChannelId='+campaignChannelId)
+                  }else{
+                    // 跳转报名成功
+                    var eventId = asd;
+                    var campaignChannelId = this.$store.state.activityMessage.campaignChannelId;
+                    this.$router.push('/seccess?'+ 'eventId='+eventId+'&campaignChannelId='+campaignChannelId)
+                  }
+                })
+              }else{
+                alert("信息提交失败！");
+              }
             })
 
 
